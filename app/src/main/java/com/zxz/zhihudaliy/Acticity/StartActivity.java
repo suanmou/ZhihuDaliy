@@ -57,6 +57,8 @@ public class StartActivity extends AppCompatActivity {
     private void startActivity(){
         Intent intent = new Intent(StartActivity.this,MainActivity.class);
         startActivity(intent);
+//        overridePendingTransition这个函数有两个参数，一个参数是第一个activity进入时的动画，另外一个参数则是第二个activity退出时的动画。
+//         它必须紧挨着startActivity()或者finish()函数之后调用
         overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
         finish();
     }
