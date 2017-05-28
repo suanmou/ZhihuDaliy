@@ -16,6 +16,7 @@ import java.util.Random;
 public class StartActivity extends AppCompatActivity {
     private  ImageView start_image;
     private  int[] images = {R.drawable.start0,R.drawable.start1,R.drawable.start2,R.drawable.start3,R.drawable.start4};
+//  可网络接入
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +45,9 @@ public class StartActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                startActivity();
+             /* 1.*/  startActivity();
+//                finish();
+//                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
 
             @Override
@@ -54,6 +57,7 @@ public class StartActivity extends AppCompatActivity {
         });
         start_image.startAnimation(startAnimation);
     }
+//    2单独测试startActivity解除测试1,2,注释1.后的语句，整合后加入MainActivity
     private void startActivity(){
         Intent intent = new Intent(StartActivity.this,MainActivity.class);
         startActivity(intent);
@@ -62,4 +66,5 @@ public class StartActivity extends AppCompatActivity {
         overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
         finish();
     }
+
 }

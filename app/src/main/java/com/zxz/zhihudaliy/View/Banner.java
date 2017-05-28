@@ -32,7 +32,9 @@ import java.util.logging.LogRecord;
 
 public class Banner extends FrameLayout {
     private ViewPager viewPager;
+//    左右滑动组件
     private BannerPagerAdapter adapter;
+//    bannerPagerAdapter的适配器
     private TextView topStoriesTitle;
     private List<ImageView> imageViews;
     private List<TopStories> topStoriesList;
@@ -61,7 +63,6 @@ public class Banner extends FrameLayout {
         viewPager= (ViewPager) view.findViewById(R.id.viewPager);
         topStoriesList = getDefaultBannerList();
         dotList = new ArrayList<>();
-//        handler1 = new android.os.Handler();
         handler = new android.os.Handler();
         topStoriesTitle = (TextView)view.findViewById(R.id.articleTitle);
         View dot0 = view.findViewById(R.id.v_dot0);

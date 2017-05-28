@@ -4,14 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.zxz.zhihudaliy.Acticity.MainActivity;
 import com.zxz.zhihudaliy.Acticity.R;
 import com.zxz.zhihudaliy.Adapter.ArticleThemeListAdapter;
 import com.zxz.zhihudaliy.Bean.Others;
 import com.zxz.zhihudaliy.Bean.Theme;
+import com.zxz.zhihudaliy.Listener.OnLoadThemesListener;
+import com.zxz.zhihudaliy.Net.HttpUtil;
 import com.zxz.zhihudaliy.Utility.Constant;
 
 import java.util.ArrayList;
@@ -47,16 +51,52 @@ public class MenuFragment extends BaseFragment{
         }
         adapter=new ArticleThemeListAdapter(mActivity,themeStringList);
         themesListView.setAdapter(adapter);
-//        homePage.setOnClickListener(new View.OnClickListener(){
-//
-//            @Override
-//            public void onClick(View view) {
-//                MainActivity mainActivity =getRootActivity();
-//                if(!mainActivity.isHomepage){
-//                    mainActivity.getHomepage();
-//                }
-//                mainActivity.closeDrawerLayout();
-//            }
-//        });
+        homePage.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                MainActivity mainActivity =getRootActivity();
+                if(!mainActivity.isHomepage){
+                    mainActivity.getHomepage();
+                }
+                mainActivity.closeDrawerLayout();
+            }
+        });
+
+
+        //获取文章主题事件监听
+        OnLoadThemesListener listener = new OnLoadThemesListener() {
+            @Override
+            public void onSuccess(List<Others> othersList) {
+                themeList.clear();
+                themeList.addAll(othersList);
+                themeStringList.clear();
+                for (int i = 0; i < othersList.size(); i++) {
+                    themeStringList.add(othersList.get(i).getName());
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        };
+        themesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int themeId = themeList.get(position).getId();
+                if (themeId != getRootActivity().getCurrentId()) {
+                    String title = themeList.get(position).getName();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("ID", themeId);
+                    bundle.putString("Title", title);
+                    getRootActivity().getThemeFragment(themeId, bundle);
+                }
+                getRootActivity().closeDrawerLayout();
+            }
+
+        });
+        HttpUtil.getThemes(listener);
     }
 }

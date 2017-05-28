@@ -11,9 +11,11 @@ import java.util.List;
 
 /**
  * Created by suan on 2017/5/14.
+ * 轮播图
  */
 
 public class BannerPagerAdapter extends PagerAdapter {
+//    PagerAdapter就是ViewPager提供的一个适配器,方便我们对各个View进行控制
     private List<ImageView> imageViews;
     private OnBannerClickListener onBannerClickListener;
     public BannerPagerAdapter(List<ImageView> imageViews){
@@ -22,6 +24,7 @@ public class BannerPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
+//        初始化item
 //        return super.instantiateItem(container, position);
         ImageView iv = imageViews.get(position);
         container.addView(iv);
