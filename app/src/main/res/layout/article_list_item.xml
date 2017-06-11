@@ -17,14 +17,14 @@
         android:layout_margin="5dp"
         android:gravity="center"
         android:orientation="horizontal">
-
+        <!--改成向左对齐 -->
         <TextView
             android:id="@+id/article_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:maxLines="3"
+            android:gravity="left"
+			android:maxLines="3"
             android:padding="4dp"
             android:textColor="#000000"
             android:textSize="19sp" />

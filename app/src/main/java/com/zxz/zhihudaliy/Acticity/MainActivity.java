@@ -1,6 +1,14 @@
 package com.zxz.zhihudaliy.Acticity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -10,21 +18,37 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.zxz.zhihudaliy.Bean.DayNight;
 import com.zxz.zhihudaliy.Fragment.BaseFragment;
 import com.zxz.zhihudaliy.Fragment.MainFragment;
 import com.zxz.zhihudaliy.Fragment.ThemeFragment;
+import com.zxz.zhihudaliy.Helper.DayNightHelper;
 import com.zxz.zhihudaliy.Net.HttpUtil;
 //import com.zxz.zhihudaliy.R;
 import com.zxz.zhihudaliy.Acticity.R;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.lang.reflect.InvocationTargetException;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-
+    private Toolbar toolbar;
     private SwipeRefreshLayout refreshLayout;
 
     //文章的发布日期
@@ -36,10 +60,23 @@ public class MainActivity extends AppCompatActivity {
     private int currentId;
 
     public boolean isHomepage;
+//    夜间模式实现
+    private final static String TAG = DayNightActivity.class.getSimpleName();
+//    将主题设置保存到SharePreferences的工具
+    private DayNightHelper mDayNightHelper;
+    private RecyclerView mRecyclerView;
+    private LinearLayout mHeaderLayout;
+    private List<RelativeLayout> mLayoutList;
+    private List<LinearLayout> mLinearLayoutList;
 
+    private List<TextView> mTextViewList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+//        initData();
+//        initTheme();
+
         setContentView(R.layout.activity_main);
         initView();
         currentId = -1;
@@ -52,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("享受阅读的乐趣");
@@ -76,6 +113,177 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    //新添加！！！！！！菜单功能
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    private void initData() {
+        mDayNightHelper = new DayNightHelper(this);
+    }
+    private void initTheme() {
+        if (mDayNightHelper.isDay()) {
+            mDayNightHelper.setMODE(DayNight.NIGHT);
+            setTheme(R.style.NightTheme);
+        } else {
+            mDayNightHelper.setMODE(DayNight.DAY);
+        }
+    }
+    private void toggleThemeSetting() {
+        if (mDayNightHelper.isDay()) {
+            mDayNightHelper.setMODE(DayNight.NIGHT);
+            setTheme(R.style.NightTheme);
+        } else {
+            mDayNightHelper.setMODE(DayNight.DAY);
+            setTheme(R.style.DayTheme);
+        }
+    }
+    private void changeThemeByZhiHu() {
+        showAnimation();
+        toggleThemeSetting();
+        refreshUI();
+    }
+    /**
+     * 刷新UI界面
+     */
+    private void refreshUI() {
+        TypedValue background = new TypedValue();//背景色
+        TypedValue textColor = new TypedValue();//字体颜色
+        Resources.Theme theme = getTheme();
+        theme.resolveAttribute(R.attr.colorBackground, background, true);
+        theme.resolveAttribute(R.attr.colorTextColor, textColor, true);
+//        drawerLayout.setBackgroundResource(background.resourceId);
+//        refreshLayout.setBackgroundResource(background.resourceId);
+//        toolbar.setBackgroundResource(background.resourceId);
+//        mHeaderLayout.setBackgroundResource(background.resourceId);
+//        for (RelativeLayout layout : mLayoutList) {
+//            layout.setBackgroundResource(background.resourceId);
+//        }
+//        for (TextView textView : mTextViewList) {
+//            textView.setBackgroundResource(background.resourceId);
+//        }
+//        Resources resources = getResources();
+//        for (TextView textView : mTextViewList) {
+//            textView.setTextColor(resources.getColor(textColor.resourceId));
+//        }
+//
+//        int childCount = mRecyclerView.getChildCount();
+//        for (int childIndex = 0; childIndex < childCount; childIndex++) {
+//            ViewGroup childView = (ViewGroup) mRecyclerView.getChildAt(childIndex);
+//            childView.setBackgroundResource(background.resourceId);
+////            View infoLayout = childView.findViewById(R.id.info_layout);
+////            infoLayout.setBackgroundResource(background.resourceId);
+////            TextView nickName = (TextView) childView.findViewById(R.id.tv_nickname);
+////            nickName.setBackgroundResource(background.resourceId);
+////            nickName.setTextColor(resources.getColor(textColor.resourceId));
+////            TextView motto = (TextView) childView.findViewById(R.id.tv_motto);
+////            motto.setBackgroundResource(background.resourceId);
+////            motto.setTextColor(resources.getColor(textColor.resourceId));
+//        }
+//
+//        //让 RecyclerView 缓存在 Pool 中的 Item 失效
+//        //那么，如果是ListView，要怎么做呢？这里的思路是通过反射拿到 AbsListView 类中的 RecycleBin 对象，然后同样再用反射去调用 clear 方法
+//        Class<RecyclerView> recyclerViewClass = RecyclerView.class;
+//        try {
+//            Field declaredField = recyclerViewClass.getDeclaredField("mRecycler");
+//            declaredField.setAccessible(true);
+//            Method declaredMethod = Class.forName(RecyclerView.Recycler.class.getName()).getDeclaredMethod("clear", (Class<?>[]) new Class[0]);
+//            declaredMethod.setAccessible(true);
+//            declaredMethod.invoke(declaredField.get(mRecyclerView), new Object[0]);
+//            RecyclerView.RecycledViewPool recycledViewPool = mRecyclerView.getRecycledViewPool();
+//            recycledViewPool.clear();
+//
+//        } catch (NoSuchFieldException e) {
+//            e.printStackTrace();
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchMethodException e) {
+//            e.printStackTrace();
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
+//
+//        refreshStatusBar();
+    }
+
+    /**
+     * 刷新 StatusBar
+     */
+    private void refreshStatusBar() {
+        if (Build.VERSION.SDK_INT >= 21) {
+            TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = getTheme();
+            theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+            getWindow().setStatusBarColor(getResources().getColor(typedValue.resourceId));
+        }
+    }
+
+    /**
+     * 展示一个切换动画
+     */
+    private void showAnimation() {
+        final View decorView = getWindow().getDecorView();
+        Bitmap cacheBitmap = getCacheBitmapFromView(decorView);
+        if (decorView instanceof ViewGroup && cacheBitmap != null) {
+            final View view = new View(this);
+            view.setBackgroundDrawable(new BitmapDrawable(getResources(), cacheBitmap));
+            ViewGroup.LayoutParams layoutParam = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
+            ((ViewGroup) decorView).addView(view, layoutParam);
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
+            objectAnimator.setDuration(300);
+            objectAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    ((ViewGroup) decorView).removeView(view);
+                }
+            });
+//
+            objectAnimator.start();
+        }
+    }
+
+    /**
+     * 获取一个 View 的缓存视图
+     *
+     * @param view
+     * @return
+     */
+    private Bitmap getCacheBitmapFromView(View view) {
+        final boolean drawingCacheEnabled = true;
+        view.setDrawingCacheEnabled(drawingCacheEnabled);
+        view.buildDrawingCache(drawingCacheEnabled);
+        final Bitmap drawingCache = view.getDrawingCache();
+        Bitmap bitmap;
+        if (drawingCache != null) {
+            bitmap = Bitmap.createBitmap(drawingCache);
+            view.setDrawingCacheEnabled(false);
+        } else {
+            bitmap = null;
+        }
+        return bitmap;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_item1:
+//                toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                changeThemeByZhiHu();
+                break;
+            case R.id.action_item2:
+                Intent intent = new Intent(this, Main2Activity.class);
+                startActivity(intent);
+                break;
+            default:break;
+        }
+        return true;
+
     }
 
     //获取主页

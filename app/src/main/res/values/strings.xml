@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">ZhihuDaliy</string>
+    <string name="app_name">仿知乎日报</string>
+    <string name="day_night_mode">DayNight Mode</string>
 </resources>

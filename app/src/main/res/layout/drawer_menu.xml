@@ -11,7 +11,6 @@
         android:background="#0099cc"
         android:orientation="vertical"
         android:padding="4dp">
-
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -27,36 +26,60 @@
             android:gravity="center"
             android:orientation="horizontal">
 
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:onClick="joke"-->
+                <!--android:text="我的收藏"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:textSize="15sp" />-->
+
+            <!--<ImageView-->
+                <!--android:layout_width="40dp"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:src="@drawable/collect" />-->
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_backup"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_star_white_24dp"
                 android:onClick="joke"
+                android:gravity="center"
                 android:text="我的收藏"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="15sp" />
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:src="@drawable/collect" />
-
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:onClick="joke"-->
+                <!--android:text="离线下载"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:textSize="15sp" />-->
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_download"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_file_download_white_24dp"
+                android:gravity="center"
                 android:onClick="joke"
                 android:text="离线下载"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="15sp" />
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:src="@drawable/download" />
+            <!--<ImageView-->
+                <!--android:layout_width="40dp"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_marginRight="5dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:src="@drawable/download" />-->
 
         </LinearLayout>
 

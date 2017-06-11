@@ -26,7 +26,6 @@
                 android:fitsSystemWindows="true"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-
             <FrameLayout
                 android:id="@+id/fl_content"
                 android:layout_width="match_parent"
@@ -40,6 +39,7 @@
         android:id="@+id/menuFragment"
         android:name="com.zxz.zhihudaliy.Fragment.MenuFragment"
         android:layout_width="300dp"
+
         android:layout_height="match_parent"
         android:layout_gravity="left" />
 
