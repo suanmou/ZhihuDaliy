@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
     //Navigation Drawer是从屏幕的左侧滑出，显示应用导航的视图
     //创建Navigation Drawer需要用DrawerLayout 作为界面根控件。在DrawerLayout里面第一个View为当前界面主内容；第二个View为Navigation Drawer内容。
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
@@ -17,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -26,22 +24,18 @@
                 android:fitsSystemWindows="true"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
             <FrameLayout
                 android:id="@+id/fl_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-
         </LinearLayout>
-
     </android.support.v4.widget.SwipeRefreshLayout>
-
     <fragment
         android:id="@+id/menuFragment"
         android:name="com.zxz.zhihudaliy.Fragment.MenuFragment"
         android:layout_width="300dp"
-
         android:layout_height="match_parent"
         android:layout_gravity="left" />
-
 </android.support.v4.widget.DrawerLayout>
 
